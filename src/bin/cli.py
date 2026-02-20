@@ -15,11 +15,12 @@ Usage:
 The script:
 1. Takes text input from command line
 2. Sends it to the Ollama endpoint (default: localhost:11434)
-3. Speaks the LLM response using Piper TTS
+3. Speaks the LLM response using TTS (Piper on Linux, pyttsx3 on Windows)
 """
 
 import sys
 import os
+import platform
 from pathlib import Path
 
 # Add parent directories to path for imports
@@ -45,8 +46,8 @@ def load_config():
     return config
 
 
-def speak_text(text, piper_path, tts_model):
-    """Speak the given text using Piper TTS"""
+def speak_text_piper(text, piper_path, tts_model):
+    """Speak the given text using Piper TTS (Linux)"""
     if not text:
         return
 
@@ -85,6 +86,38 @@ def speak_text(text, piper_path, tts_model):
             print(f"Error in TTS: {error.decode()}", file=sys.stderr)
     except Exception as e:
         print(f"Error speaking text: {e}", file=sys.stderr)
+
+
+def speak_text_windows(text):
+    """Speak the given text using Windows TTS (pyttsx3)"""
+    try:
+        import pyttsx3
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 150)
+        engine.setProperty('volume', 1.0)
+        engine.say(text)
+        engine.runAndWait()
+    except ImportError:
+        print("Error: pyttsx3 not installed. Run: pip install pyttsx3", file=sys.stderr)
+    except Exception as e:
+        print(f"Error speaking text: {e}", file=sys.stderr)
+
+
+def speak_text(text, piper_path=None, tts_model=None):
+    """Speak the given text using available TTS engine"""
+    if not text:
+        return
+
+    system = platform.system()
+
+    if system == "Windows":
+        speak_text_windows(text)
+    else:
+        # Linux - use Piper
+        if piper_path and tts_model and Path(piper_path).exists() and Path(tts_model).exists():
+            speak_text_piper(text, piper_path, tts_model)
+        else:
+            print(f"Warning: Piper TTS not configured. Text: {text[:100]}...", file=sys.stderr)
 
 
 def query_ollama(prompt, endpoint, model):
@@ -201,13 +234,13 @@ Examples:
     parser.add_argument(
         '--piper',
         default=None,
-        help='Path to Piper binary'
+        help='Path to Piper binary (Linux only)'
     )
 
     parser.add_argument(
         '--tts-model',
         default=None,
-        help='Path to TTS model'
+        help='Path to TTS model (Linux only)'
     )
 
     args = parser.parse_args()
@@ -221,21 +254,22 @@ Examples:
     piper_path = args.piper or config.get('PIPER', '../tts/piper/piper')
     tts_model = args.tts_model or config.get('TTS_MODEL', '../tts/voice/libritts_r/en_US-libritts_r-medium.onnx')
 
-    # Resolve relative paths
+    # Resolve relative paths (Linux only)
     base_path = Path(__file__).resolve().parent.parent
-    if not Path(piper_path).is_absolute():
-        piper_path = base_path / piper_path
-    if not Path(tts_model).is_absolute():
-        tts_model = base_path / tts_model
+    if platform.system() != "Windows":
+        if not Path(piper_path).is_absolute():
+            piper_path = base_path / piper_path
+        if not Path(tts_model).is_absolute():
+            tts_model = base_path / tts_model
 
-    # Check if Piper exists
-    if not Path(piper_path).exists():
-        print(f"Error: Piper binary not found at {piper_path}", file=sys.stderr)
-        sys.exit(1)
+        # Check if Piper exists
+        if not Path(piper_path).exists():
+            print(f"Warning: Piper binary not found at {piper_path}", file=sys.stderr)
+            piper_path = None
 
-    if not Path(tts_model).exists():
-        print(f"Error: TTS model not found at {tts_model}", file=sys.stderr)
-        sys.exit(1)
+        if not Path(tts_model).exists():
+            print(f"Warning: TTS model not found at {tts_model}", file=sys.stderr)
+            tts_model = None
 
     if args.query:
         # Single query mode
@@ -248,13 +282,13 @@ Examples:
         if response:
             print(f"\nAssistant: {response}")
             print("\n[Speaking response...]")
-            speak_text(response, str(piper_path), str(tts_model))
+            speak_text(response, str(piper_path) if piper_path else None, str(tts_model) if tts_model else None)
         else:
             print("Failed to get response from Ollama.")
             sys.exit(1)
     else:
         # Interactive mode
-        interactive_mode(endpoint, model, str(piper_path), str(tts_model))
+        interactive_mode(endpoint, model, str(piper_path) if piper_path else None, str(tts_model) if tts_model else None)
 
 
 if __name__ == "__main__":
