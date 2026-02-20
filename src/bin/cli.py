@@ -9,12 +9,12 @@ Usage:
     # Interactive mode
     python cli.py
 
-    # With custom LLaMA endpoint
-    python cli.py --url http://localhost:8080/completion "Question"
+    # With custom Ollama endpoint
+    python cli.py --url http://localhost:11434 "Question"
 
 The script:
 1. Takes text input from command line
-2. Sends it to the LLaMA endpoint (default: localhost:8080)
+2. Sends it to the Ollama endpoint (default: localhost:11434)
 3. Speaks the LLM response using Piper TTS
 """
 
@@ -87,50 +87,47 @@ def speak_text(text, piper_path, tts_model):
         print(f"Error speaking text: {e}", file=sys.stderr)
 
 
-def query_llm(prompt, endpoint):
-    """Send query to LLaMA endpoint and get response"""
+def query_ollama(prompt, endpoint, model):
+    """Send query to Ollama endpoint and get response"""
     try:
         payload = {
+            "model": model,
             "prompt": prompt,
-            "n_predict": 256
+            "stream": False,
+            "options": {
+                "num_predict": 512
+            }
         }
         response = requests.post(
             endpoint,
             json=payload,
             headers={"Content-Type": "application/json"},
-            timeout=60
+            timeout=120
         )
 
         if response.status_code == 200:
             data = response.json()
-            return data.get("content", "")
+            return data.get("response", "")
         else:
-            print(f"Error: LLaMA endpoint returned {response.status_code}", file=sys.stderr)
+            print(f"Error: Ollama endpoint returned {response.status_code}", file=sys.stderr)
+            print(f"Response: {response.text}", file=sys.stderr)
             return None
     except requests.exceptions.ConnectionError:
-        print(f"Error: Could not connect to LLaMA endpoint at {endpoint}", file=sys.stderr)
+        print(f"Error: Could not connect to Ollama at {endpoint}", file=sys.stderr)
         return None
     except Exception as e:
-        print(f"Error querying LLM: {e}", file=sys.stderr)
+        print(f"Error querying Ollama: {e}", file=sys.stderr)
         return None
 
 
-def generate_prompt(query):
-    """Generate the full prompt for the LLM"""
-    return f"""<|system|>
-You are a helpful and friendly assistant.
-<|user|>
-{query}
-<|assistant|>"""
-
-
-def interactive_mode(endpoint, piper_path, tts_model):
+def interactive_mode(endpoint, model, piper_path, tts_model):
     """Interactive mode - continuous conversation"""
     print("=" * 50)
     print("  Speaker Assistant - Interactive Mode")
     print("=" * 50)
     print("Type 'exit' or 'quit' to stop.")
-    print(f"Connected to LLM at: {endpoint}")
+    print(f"Connected to Ollama at: {endpoint}")
+    print(f"Model: {model}")
     print("-" * 50)
 
     while True:
@@ -146,9 +143,8 @@ def interactive_mode(endpoint, piper_path, tts_model):
 
             print(f"Thinking...")
 
-            # Generate prompt and query LLM
-            prompt = generate_prompt(user_input)
-            response = query_llm(prompt, endpoint)
+            # Query Ollama
+            response = query_ollama(user_input, endpoint, model)
 
             if response:
                 print(f"\nAssistant: {response}")
@@ -157,7 +153,7 @@ def interactive_mode(endpoint, piper_path, tts_model):
                 print("[Speaking response...]")
                 speak_text(response, piper_path, tts_model)
             else:
-                print("Failed to get response from LLM.")
+                print("Failed to get response from Ollama.")
 
         except KeyboardInterrupt:
             print("\nGoodbye!")
@@ -169,7 +165,7 @@ def interactive_mode(endpoint, piper_path, tts_model):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Speaker Assistant CLI - Connect to LLM and speak responses",
+        description="Speaker Assistant CLI - Connect to Ollama and speak responses",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -180,7 +176,7 @@ Examples:
     python cli.py "What is the capital of France?"
 
     # With custom endpoint
-    python cli.py --url http://192.168.1.100:8080/completion "Hello!"
+    python cli.py --url http://192.168.1.100:11434 "Hello!"
         """
     )
 
@@ -192,8 +188,14 @@ Examples:
 
     parser.add_argument(
         '--url',
-        default='http://localhost:8080/completion',
-        help='LLaMA endpoint URL (default: http://localhost:8080/completion)'
+        default='http://localhost:11434/api/generate',
+        help='Ollama endpoint URL (default: http://localhost:11434/api/generate)'
+    )
+
+    parser.add_argument(
+        '--model',
+        default=None,
+        help='Ollama model name (default: qwen2.5:1.5b-instruct-q4_0)'
     )
 
     parser.add_argument(
@@ -203,7 +205,7 @@ Examples:
     )
 
     parser.add_argument(
-        '--model',
+        '--tts-model',
         default=None,
         help='Path to TTS model'
     )
@@ -215,8 +217,9 @@ Examples:
 
     # Get settings from config or CLI args
     endpoint = args.url
+    model = args.model or config.get('MODEL', 'qwen2.5:1.5b-instruct-q4_0')
     piper_path = args.piper or config.get('PIPER', '../tts/piper/piper')
-    tts_model = args.model or config.get('TTS_MODEL', '../tts/voice/libritts_r/en_US-libritts_r-medium.onnx')
+    tts_model = args.tts_model or config.get('TTS_MODEL', '../tts/voice/libritts_r/en_US-libritts_r-medium.onnx')
 
     # Resolve relative paths
     base_path = Path(__file__).resolve().parent.parent
@@ -240,19 +243,18 @@ Examples:
         print(f"Query: {query}")
         print("Thinking...")
 
-        prompt = generate_prompt(query)
-        response = query_llm(prompt, endpoint)
+        response = query_ollama(query, endpoint, model)
 
         if response:
             print(f"\nAssistant: {response}")
             print("\n[Speaking response...]")
             speak_text(response, str(piper_path), str(tts_model))
         else:
-            print("Failed to get response from LLM.")
+            print("Failed to get response from Ollama.")
             sys.exit(1)
     else:
         # Interactive mode
-        interactive_mode(endpoint, str(piper_path), str(tts_model))
+        interactive_mode(endpoint, model, str(piper_path), str(tts_model))
 
 
 if __name__ == "__main__":
