@@ -1,0 +1,20 @@
+# Audio
+/audio/*.wav
+
+# Binaries
+llm/bin/*
+tts/piper/*
+
+# Models
+llm/models/*
+tts/voice/**/*
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# System files
+.DS_Store

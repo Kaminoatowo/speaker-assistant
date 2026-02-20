@@ -1,0 +1,1298 @@
+Unilab XXXX Software Family - Comprehensive Features, Terms & Conditions
+
+UNILAB HEAT TRANSFER SOFTWARE
+
+This document consolidates detailed information about the features, support procedures, certification processes, and technical specifications related to the Unilab heat transfer software suite, including AHRI certification, automotive suites, Breeze, COILS, DLL integration, and other related topics.
+
+UNILAB S.r.l. - Via N. Bixio 6 - 35131 - Padova (PD) - Italy
+Document Revision: 2 - Date 03/10/2022
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+
+1. AHRI Support and Certification Procedures
+2. Automotive Suite: PAF, TAF, PAF3, ALOA
+3. UNILAB BREEZE - Integration and Features
+4. Ventilation System Design (Basic Estimate and Advanced Project)
+5. Heat Exchanger Design and Calculation Features
+6. Manifold Management and Selection
+7. Advanced Calculation Features and Parameters
+8. DLL COILS - Integration and Licensing
+9. Technical Specifications and Requirements
+
+================================================================================
+1. AHRI SUPPORT AND CERTIFICATION PROCEDURES
+================================================================================
+
+**Overview**
+
+The AHRI (Air-Conditioning, Heating, and Refrigeration Institute) certification process applies to manufacturers seeking to verify the performance of their heat exchangers. The process requires strict adherence to AHRI standards and involves several steps, including application submission, testing, and verification.
+
+**Qualification Process for OEM Applicants**
+
+OEM applicants must submit a certification application package that includes:
+- Physical coil data per ASHRAE 33
+- One test report per Basic Model Group (BMG)
+- The applicable Rating Calculation AHRI 410 form
+- A copy of the applicant's selection software
+
+The process involves:
+1. Processing the application
+2. Signing a certification agreement
+3. Paying participation and licensing fees within 30 days
+4. Selecting test samples
+
+**Testing Requirements**
+
+The number of tests required is 30% of the applicant's BMGs, with a minimum of two models. For example, if an applicant has 11 BMGs, 30% is 3.3, which rounds up to 4 tests. Samples must be available for testing within 30 days of AHRI's request.
+
+**Testing and Certification**
+
+AHRI contracts an independent third-party laboratory to conduct tests according to the standard. The laboratory compares measured results with the declared data. 
+
+Compliance criteria:
+- If the deviation in capacity exceeds 5%, the coil is considered non-compliant
+- If pressure drops exceed 10%, the coil is considered non-compliant
+- If either occurs, the model fails certification
+
+**Certification Outcomes**
+
+If the coil passes:
+- It is certified and can be listed in the AHRI Directory
+
+If it fails, the applicant has three options:
+1. Repeat testing with a second identical sample (up to two tests)
+2. Declare the model obsolete and discontinue production
+3. Apply for rerating, which involves downgrading the BMG based on laboratory results
+
+**Rerating (Downgrade) Process**
+
+Rerating is not a recalibration but a downgrade of the certification. The software's rated values are adjusted proportionally to the measured laboratory data. 
+
+Example:
+- If the declared capacity is 100 kW but the laboratory measurement is 94 kW
+- A ratio of 0.94 is computed
+- The software must then be updated to reflect this new capacity
+- All models within the BMG are downgraded accordingly
+
+The recalibration involves:
+- Printing the selection of the failed model
+- Comparing calculations from the original and rerated software versions
+- Updating the software with the rerated values and release number
+
+This process ensures the software's output aligns with laboratory results, maintaining certification compliance.
+
+**Preparing for Certification**
+
+To minimize rerating risks, it is recommended to:
+- Conduct testing in an accredited laboratory
+- Prepare detailed test reports for each BMG
+- Use UNILAB to calibrate the software geometry based on test data
+- Keep the software builds aligned with AHRI requirements
+- Involve UNILAB early in the process for calibration and setup
+
+**Customer Cooperation and Communication**
+
+Customers must promptly inform UNILAB of the start of certification or re-rating processes. If AHRI contacts the company directly for re-audits, the customer must communicate this to UNILAB with:
+- Setup details
+- Software version
+- Other relevant information
+
+Failure to communicate can lead to delays or certification issues.
+
+**Additional Services and Support**
+
+UNILAB offers services to prepare setup files, calibrate software, and support ongoing certification activities. These services include:
+- Creating dedicated software setups for AHRI compliance
+- Installing setups into the AHRI Virtual Machine
+- Performing periodic checks and recalibrations
+- Assisting with re-rating procedures if necessary
+
+**Technical Notes on Software and Calibration**
+
+- The current software version must include the geometries for certification
+- Special versions of COILS are prepared for AHRI performance checks
+- Calibration of bypass factors and other parameters may require detailed analysis of annual reports and test data
+- In case of discrepancies, geometry calibration or detailed analysis may be performed at additional cost
+
+================================================================================
+2. AUTOMOTIVE SUITE: PAF, TAF, PAF3, ALOA
+================================================================================
+
+**Overview**
+
+The automotive suite includes specialized tools such as PAF3, which can model three fluid flows in a heat exchanger with a common air side.
+
+**PAF3 Capabilities**
+
+PAF3, developed for IRA radiatori, allows for up to four sections with different fluids, such as:
+- Water
+- Glycol
+- Oil
+- Air
+
+The interface enables:
+- Defining multiple sections, each with its own fluid type and fin configuration
+- Dividing the air flow proportionally based on the total airflow
+
+Example: With a total airflow of 30,000 m³/h, each of the three sections could handle approximately 10,000 m³/h.
+
+**ALOA Geometry Details**
+
+The ALOA heat exchanger geometry includes parameters such as:
+- Tube spacing (Tx - TubeSpace): 15.875 mm
+- Row spacing (Rx - RowSpace): 12.7 mm
+- B0 (overall width): 9.525 mm
+- B1 (inner width): 7.9375 mm
+- Tube length (TI): 13.4112 mm
+- Tube height (Th): 2.4892 mm
+- Tube thickness (Tt): 0.1778 mm
+
+These parameters are stored in the database, used in project configurations, and can be updated or saved as needed.
+
+**Fin Types and Parameters**
+
+Louvered Fins:
+- Louver pitch ($L_{p}$): distance from one louver to the next
+- Louver height ($L_{h}$): height of the louver
+- Louver length ($L_{d}$): length of the louver
+- Tube depth ($T_{d}$): length of the bar
+- Louver angle ($\theta$): inclination of the louver relative to the fin's direction
+
+Multiport Mini Channel:
+Parameters:
+- Width ($B_{l}$): length of the side containing the channels
+- Height ($B_{h}$): height of the bar
+- Wall thickness ($B_{wt}$): distance between channels
+- Rib thickness ($B_{rt}$): distance from channels to the top/bottom of the bar
+- Ports ($p$): number of channels
+
+================================================================================
+3. UNILAB BREEZE - INTEGRATION AND FEATURES
+================================================================================
+
+**System Integration Overview**
+
+The main goal is to integrate UNILAB BREEZE, a web application for selecting controlled mechanical ventilation units, into the customer's SAP-based estimator system. 
+
+Technical Architecture:
+- BREEZE software runs on a Windows server with an SQL database
+- Exposed via IIS
+- Customer's internal estimator system interacts with SAP
+- Provides APIs and data access
+
+**Integration Workflow**
+
+User Authentication:
+- User authentication within the customer's estimator system
+- Unilab does not handle authentication
+
+Access Process:
+1. When the user accesses the controlled mechanical ventilation section, they can choose to either:
+   - Proceed with a simple estimate
+   - Launch UNILAB BREEZE for detailed selection
+
+2. A specialized SAP interface allows opening BREEZE via a button, passing an authentication token generated by an API
+3. The token is validated by the estimator
+4. User logs into BREEZE with the token
+5. User performs the selection
+6. Upon completion, BREEZE outputs a table with CODE and QUANTITY, based on a print list and report
+
+**Data Exchange**
+
+Output data includes:
+- Codes and quantities passed back to the estimator system via an API
+- Project report as a PDF
+- JSON file containing project data for potential future modifications
+
+**Project Management**
+
+When reloading an existing project:
+- System can pass the token with a GUID and the JSON file for revision purposes
+- System identifies whether a new quote or an update is being performed based on the presence of the GUID and JSON
+- Process ensures secure access, with tokens validated through SAP APIs
+- Project data stored for later retrieval and modification
+
+================================================================================
+4. VENTILATION SYSTEM DESIGN (BASIC ESTIMATE AND ADVANCED PROJECT)
+================================================================================
+
+**Two Operating Modes**
+
+The software accessible via browser allows the sales network to generate two types of outputs:
+
+**Mode 1: "Estimate" (BASIC)**
+
+A rough estimate based on minimal input:
+- Number of rooms
+- Area in square meters
+- Flow rates
+
+Output:
+- List of materials and prices, exportable to Excel
+- No detailed piping or component plans
+
+**Mode 2: "Project" (ADVANCED)**
+
+Once the initial estimate is approved, users can proceed to detailed project planning, including:
+- Precise material lists
+- DWG drawings
+- Pressure drops in pascals
+- Flow speeds
+- Operational conditions
+
+**User Authentication**
+
+- Standard login with username (email) and password
+- Managed by the system administrator
+- No automated registration
+- Credentials are created manually and communicated securely
+
+**Basic Estimate - Input Data**
+
+Required inputs:
+- Square meters of each room
+- Number of rooms in the building
+- Air flow for each room
+- Estimated meters of pipes required for the VMC system
+
+Features:
+- Based on the input meters, the software indicates the number of pipe skeins needed
+- Does not include drawing or map loading
+- Consists of a data input grid that generates an estimate
+- User selects the pipe diameter
+- Application provides material list and maximum system price
+- Exportable in Excel format
+
+**Component Rules**
+
+- Components have connection rules (e.g., pipe with diameter 63 mm connects to a plenum with a specific fitting)
+- Customer must provide detailed connection rules and constraints for automatic component association
+- Possible to insert links within the software to user guides, downloadable PDFs, or videos
+
+**Report Output**
+
+Results displayed in a grid showing:
+- Unit models
+- Material lists
+- Prices
+
+Export format:
+- Excel format provided by customer
+- No further processing or forwarding to ERP systems unless separately quoted
+
+**Advanced Project Section - Workflow**
+
+Step 1: Load Plant
+- Formats: .jpeg, .png, or .dwg/.dxf
+- Loading in .jpeg or .png allows viewing the plant but not exporting in .dwg
+- Loading in .dwg permits exporting in .dwg
+- Program only supports 2D plans; does not handle 3D or BIM files
+
+Step 2: Scale Image
+- User sets room volumes and surfaces
+- Defines surface area from the plan with an average room height (editable)
+- Surface area and height calculate volume
+
+Step 3: Define Air Flow
+User can specify air flow by:
+1. Indicating air flow directly, OR
+2. Specifying number of occupants and air flow per person according to regulations
+
+Air Flow Calculation:
+- Default maximum number of people per room can be set
+- Flow rate per person determines total flow
+- Software compares recycled air flow and occupant-based flow to select the maximum
+- Ensures balanced ventilation
+
+Alternative method:
+- Specify number of spare parts per hour
+- Default replacement factor of 0.5, adjustable by user
+
+Validation:
+- Software returns air flow value
+- Must respect minimum turnover limits provided by customer
+- Warnings issued if regulations are not met
+- Software identifies rooms with air intake, exhaust, or no vents
+
+Step 4: Draw Ventilation System
+- Draw lines on the map to create graphic scheme
+- Place units, pipes, vents, and grilles
+- Indicate position (floor, ceiling, wall)
+- Multiple floors can be added, connected via special components
+- System does not generate 3D graphics—only a list of plans
+
+Step 5: Select Pipe Diameters
+Available pipe types:
+- Three round sections: 60 mm, 80 mm, 90 mm
+- Two flat pipes
+
+Selection process:
+- User chooses machine type and installation position (horizontal or vertical)
+- For each section, software calculates how many pipes are needed based on airflow
+- Warning if splitting or larger diameters are necessary
+- Flow rate and pipe diameter determine air speed
+
+Air Speed Requirements:
+- Should not exceed 3 m/s for final sections to avoid noise
+- If calculated speed exceeds limit, software suggests:
+  * Additional pipes
+  * Larger diameters
+
+Visual Representation:
+- During design phase: only symbolic lines shown
+- Indications of multiple pipes if needed
+- Final project can display multiple lines graphically
+
+**Changing Pipe Diameters or Machine Types**
+
+Flexibility:
+- System allows selecting single pipe diameter for entire system
+- Reflects typical installation practices
+- If pressure drops or issues arise, user can revert to larger diameters without redesigning entire scheme
+- Diagram remains independent of specific diameters or machines
+
+**Machine Selection**
+
+Capabilities:
+- Software can test machine capacity and issue warnings if unit is too small
+- Offers 5-6 sizes
+- User can set fan speed (EC fans with 3 or 4 speeds)
+- Machine's performance curves provided in Excel format by customer
+
+Sizing considerations:
+- Project flow rate
+- Spare volume
+- User-defined parameters
+
+Process:
+- Once machine is selected, software simulates operation at chosen speed
+- Provides detailed warnings and operating conditions
+
+**Additional Features**
+
+Flow Control:
+- Optional flow control valves can be included
+- Manages flow regulation via membranes with two positions
+- Each position has specific kv value
+
+Pressure Drops:
+- Can be manually entered for inlet/extraction grids
+
+Project Management:
+- Projects can be saved or reloaded via local files
+- Cloud storage or ERP integration not included unless separately quoted
+
+Reports:
+- Software can generate printouts with:
+  * Technical reports
+  * Plans
+  * Flow rates
+  * Pressure drops
+  * Circuit regulation details
+- Output formats: Word or PDF
+- Print specifications must be provided and approved before development
+
+**Archive Management**
+
+Technicians can:
+- Upload machine/component images
+- Edit machine data
+- Manage code lists
+- Update specifications
+- Edit fan curves
+- Modify pressure drops
+- Update data tables
+- Data exchange via Excel supported for bulk modifications
+
+**Graphical & Responsiveness Interface**
+
+Development:
+- Standard interface will be developed
+- Customizable: color, logo, button placement, fonts, images upon agreement
+- Only Unilab can modify the logo
+- Fully responsive and optimized for PC or Mac browsers
+- Mobile use discouraged due to map viewing limitations
+
+**Required Data from Customer**
+
+- Full HD logo in PNG format (150 dpi, 1080p)
+- Company data
+- Component list with codes
+- Fan curves and pressure drop data in Excel
+- Connection rules and constraints
+- Regulatory warnings and limits
+- Component specifications
+
+**Print Templates**
+
+Requirements:
+- Must be provided in Word or PDF
+- Approved by relevant departments
+- Developed once
+- Revisions may incur extra costs
+
+**Server Requirements**
+
+Minimum Requirements:
+- RAM: 8 GB
+- CPU: 4 vCPU
+- Disk space: 160 GB SSD
+
+Recommended Configuration:
+- Storage: 80 GB SSD
+- RAM: 12 GB
+- CPU: 2 cores
+- OS: Windows Server 2019 Standard
+
+Customer Must Install:
+- IIS Manager
+- SQL Server 2014 (Express, free)
+- WinMerge
+- Firefox
+- Notepad
+
+**Setting Company Logo**
+
+Video guide available at:
+https://support.unilab.eu/support/solutions/articles/9000212538-how-to-set-logo-and-company-data-in-coils
+
+================================================================================
+5. HEAT EXCHANGER DESIGN AND CALCULATION FEATURES
+================================================================================
+
+**Circuits and Tube Configuration**
+
+Number of Circuits Formula:
+Number of circuits = (Number of pipes × number of rows) / number of pipes in series
+
+Definitions:
+- Number of circuits: the number of tubes fed simultaneously in the heat exchanger
+- Number of tubes in series: how many tubes the fluid passes through for each circuit
+
+Example:
+If a coil has 3 rows and 6 tubes per row, with 2 circuits:
+- Fluid enters the collector
+- Distributed to each circuit
+- Passes through the tubes in series within each circuit
+
+**Coil Structure**
+
+Each coil has:
+- Specific tube arrangement
+- Characterized by a certain number of rows and tubes per row, forming a matrix
+- A circuit is an isolated section of the coil with an input and an output
+- Fluid enters the collector and is distributed to the circuits
+
+**Water Pressure Drops and Derating Factors**
+
+Derating factors affect the capacity of coils:
+- Can modify the water side pressure drop (Δp)
+- Third derating factor allows adjusting water side pressure drop
+- Accounts for real-world conditions that differ from ideal assumptions
+
+**Security Settings**
+
+Location: Within geometry details section
+
+Purpose:
+- Prevent accidental modifications of coil configurations or derating factors
+- Factors are editable by technicians
+- Must intentionally access the section
+- Click on "factor details"
+- Voluntarily modify values
+- No lock mechanism, but menu structure makes accidental editing unlikely
+
+**Coils in Series (Enterprise Version)**
+
+Feature: "Coils in Series" option
+
+Capabilities:
+- Connect multiple coils in series
+- Simulate complex configurations (e.g., coil treating outdoor air before mixing with return air)
+- Software can handle by adding all coils to the heat series
+
+Process:
+1. Use "Add Coil to Heat Series" button to include all relevant coils
+2. Select each coil (e.g., "COIL2")
+3. Input data in designated fields (highlighted in yellow and white)
+4. Complete series by defining compressor or other components
+5. Finalize configuration
+6. Perform calculations by clicking "Calculate"
+7. Results can be printed with output review options
+
+**Margin Factors in Coils**
+
+Purpose: Adjustable parameters to fine-tune heat transfer calculations based on experimental data
+
+Available Factors:
+
+1. Fin corrugation factor or slope:
+   - Reflects ratio between heat transfer coefficient of corrugated finned coil and plain fin coil
+   - Value of 1 indicates plain fin
+   - Higher or lower values adjust the exchange coefficient
+
+2. Tube side coefficient factor:
+   - Represents ratio of actual internal tube heat transfer coefficient to ideal
+   - Value of 1 corresponds to smooth cylindrical tubes
+
+3. Correction factor of friction:
+   - Adjusts internal tube friction factor
+   - Influences pressure drops inside tubes
+
+4. Friction factor air side:
+   - Modifies external air side pressure loss
+
+5. Surface reduction/increase factor:
+   - Accounts for differences in exchange surface area
+   - Such as in coils with variable fin heights or spacing
+
+6. Reduction area pass. tube:
+   - Considers areas where fluid passage is reduced
+   - Values from 0 to 1
+
+7. Latent air friction factor:
+   - Specific to dehumidification applications
+   - Adjusts pressure drop caused by water accumulation on fins
+
+8. Tube internal surface ratio:
+   - Applicable to grooved tubes
+   - Specifies ratio of internal grooved surface to smooth surface
+
+9. Security factor:
+   - Applies margin to overall calculation
+   - Increasing or decreasing predicted performance
+
+10. Sensible factor:
+    - Adjusts sensible (temperature-related) capacity of coil
+    - Typical default: 0.6
+
+Important Notes:
+- Factors are based on laboratory tests
+- Should be used cautiously to avoid unphysical results
+
+**Modeling Coils with Special Configurations**
+
+Angular Cut Coils:
+- Recommended to model as standard finned coil with appropriate dimensions
+- Example: coil with length 1950 mm, 12 tubes per row, 7 rows, one inlet and one outlet collector
+
+Unequal Row Lengths:
+- Configuration with rows of unequal length (e.g., one full row and second row at 50% length) not directly supported
+- UNILAB coils assume uniform row lengths
+- Workaround: model as multiple segments or use custom configurations
+
+**Reference Literature**
+
+Recommended books for coil design:
+- Hewitt, "Process Heat Transfer"
+- Hewitt, "Heat Exchanger Design Handbook"
+- Kays, "London, Compact Heat Exchangers"
+
+**Overheating Definitions**
+
+Evaporator Overheating:
+- Temperature difference between fluid at compressor inlet and evaporator outlet
+
+Condenser Overheating:
+- Temperature difference between overheated fluid (at compressor outlet) and condensation temperature
+
+**Surface Corrugation Types**
+
+Terms describing types of surface corrugations:
+
+1. Sine Wave fin:
+   - Fin with sinusoidal corrugation pattern
+
+2. Herringbone:
+   - Tube surface with herringbone pattern of corrugations
+
+3. Grooved tube (Gross Grooved):
+   - Tube with internal grooves for improved heat transfer
+
+Purpose:
+- Enhance heat transfer by increasing surface area and turbulence
+
+**Condensing Modes**
+
+Partial or Multiphase Condensing:
+- Divides process into: overheating, condensing, and subcooling phases
+- Allows more detailed modeling
+- Available only in Professional and Enterprise versions
+
+Standard Condensing Mode:
+- Software assumes 100% condensation capacity
+- Entire refrigerant is condensed
+- No partial or multiphase effects
+
+================================================================================
+6. MANIFOLD MANAGEMENT AND SELECTION
+================================================================================
+
+**Manifold Management Overview**
+
+The software allows users to insert or select manifolds with specified dimensions and materials.
+
+**Automatic Length Calculation**
+
+Manifold length calculated based on coil dimensions and configuration:
+- Vertical manifolds: length = coil height + 200 mm
+- Horizontal manifolds: length = coil length + 200 mm
+
+**Main Calculation Interface**
+
+User options:
+- Choose manifold material
+- Select calculation mode (automatic or manual)
+- Specify arrangement (vertical or horizontal)
+
+Software capabilities:
+- Calculates optimal manifold dimensions
+- Allows manual input for testing specific configurations
+- Specify number of tubes, skipped tubes, and circuits
+- Determines fed tube count and pressure drops
+
+**Automatic Manifold Selection**
+
+Features:
+- Automatic selection and sizing based on fluid velocity criteria
+- Ensures pressure drops do not adversely affect calculation accuracy
+
+**Calculation Process by Mode**
+
+The software evaluates fluid velocity in manifolds relative to velocity inside tubes.
+
+General Process:
+1. Computes fluid velocity in each manifold
+2. Compares with tube's internal velocity
+3. If velocity in manifold ≤ velocity inside tubes:
+   - Pressure drops considered negligible
+   - Manifold selected as best fit
+
+**Selection Criteria by Mode**
+
+Cooling and Heating Modes:
+- Inlet manifolds: minimum external diameter such that velocity ≤ tube velocity
+- Outlet manifolds: same diameter as inlet manifolds
+
+Condensing Mode:
+- Considers gas velocity in manifolds
+- Inlet manifolds: gas velocity ≤ tube velocity
+- Outlet manifolds: same diameter as inlet manifolds
+
+Direct Expansion Mode:
+- No specific calculation for inlet manifolds
+- Outlet manifolds: applies velocity comparison
+- Note: Inlet manifolds for DX-Evaporators not calculable (consistent with Unilab Coils 8)
+
+Steam Applications:
+- Similar criteria to condensing mode
+- Inlet manifolds: minimum external diameter based on gas velocity comparison
+- Outlet manifolds: same diameter as inlet manifolds
+
+Pump Evaporator Applications:
+- Inlet manifolds: minimum external diameter such that liquid velocity ≤ tube velocity
+- Outlet manifolds: equal to inlet manifolds
+
+**Catalogue Integration**
+
+- Software can automatically select manifolds from catalogues (e.g., Danfoss)
+- Does not design distributors directly in direct expansion mode
+
+**Design Principle**
+
+Selection process ensures:
+- Pressure drops in manifolds do not significantly impact overall calculation
+- Reliable and optimized coil design
+
+================================================================================
+7. ADVANCED CALCULATION FEATURES AND PARAMETERS
+================================================================================
+
+**Capillary Pressure Drop Calculations**
+
+Two-Phase Capillary Support:
+- Software supports calculation of pressure drops in two-phase capillaries
+- Considers phase change of fluids inside capillaries
+
+Calculation Method:
+- Determines length of capillary that produces specified pressure drop
+- Given: flow rate and capillary diameter
+- Uses inverse of typical pressure drop calculation
+
+Pressure Drop Formula:
+$$\Delta P = f \times \frac{L}{D} \times \frac{\rho v^2}{2}$$
+
+Where:
+- $\Delta P$ = pressure drop
+- $f$ = friction factor
+- $L$ = length of capillary
+- $D$ = internal diameter
+- $\rho$ = fluid density
+- $v$ = fluid velocity
+
+Microchannel Capillaries:
+- For internal diameters ≤ 2mm
+- Uses pre-developed models for microchannel flow
+- Estimates pressure drops accurately
+
+**Calibration of Moisture Effects**
+
+Dehumidification and Condensation:
+- Software allows calibration of moisture-related pressure drops
+- Accounts for influence of water vapor condensation
+- Effects on pressure drops across fins and coils
+- Calibration based on laboratory tests
+
+**Flow Arrangement Detection**
+
+Automatic Detection:
+- Software automatically determines flow mode based on tubes in series
+
+Criteria:
+- If tubes in series > 4: counterflow mode (uses counterflow equations)
+- If tubes in series ≤ 4: crossflow mode (uses crossflow equations)
+
+Note:
+- Automatic detection simplifies user interaction
+- Manual selection of flow type not available
+
+**Report Generation**
+
+Catalog Export:
+- Software supports generation of detailed reports and catalogs
+- Exportable Excel files
+- Can compile coil performance data into structured catalog format
+- Feature requires additional paid development time
+
+**Refrigerant Management**
+
+Available Refrigerants with Distributors:
+- R134A
+- R22
+- R407C
+- R410A
+- R507A
+
+Additional Features:
+- Setting automatic licenses
+- Adjusting fins per inch
+- Hiding certain fields
+- Customizing project paths
+- Configuring database locations
+
+**Measurement Units**
+
+Unit Conversion:
+- Can change global heat transfer coefficient units
+- Example: from kg/(m²·h) to kg/(m²·°C)
+- Accessible via tools menu
+- Option to disable calculations based on DHML (Dynamic Heat Transfer Coefficient) method
+
+**Vapor Quality**
+
+Definition:
+- Mass fraction of vapor in a saturated mixture
+
+Formula:
+$X = \frac{m_{vapor}}{m_{total}}$
+
+Where:
+- $X$ = vapor quality
+- $m_{vapor}$ = mass of vapor
+- $m_{total}$ = total mass of mixture
+
+Interpretation:
+- Vapor quality of 1: saturated vapor
+- Vapor quality of 0: pure liquid
+
+Impact on Performance:
+- Vapor quality affects heat exchanger efficiency
+- If vapor quality exceeds certain thresholds (e.g., 30%): may lead to suboptimal performance
+
+Performance Improvements:
+- Reduce temperature difference between evaporator and condenser
+- Increase subcooling
+
+**Additional Tools**
+
+Available Features:
+- Selecting distributors in coils
+- Setting frost thickness
+- Comparing different editions (Standard, Professional, Enterprise)
+
+**Edition Comparison**
+
+Enterprise Edition Features:
+- Advanced energy recovery
+- Heat balance calculations for multiple plants and coils
+- Supports complex configurations:
+  * Up to 10 plants
+  * 50 coils per plant
+
+Energy Recovery:
+- Analyze multiple heat exchangers linked hydraulically
+- Divide plant into zones
+- Calculate heat exchange effectiveness
+- Supports calculation of heat balance and energy recovery systems
+- Example: bFly recuperators
+
+================================================================================
+8. DLL COILS - INTEGRATION AND LICENSING
+================================================================================
+
+**Overview**
+
+The DLL COILS - Basic version provides core calculation functionalities with certain limitations.
+
+**Main Features**
+
+Core Capabilities:
+- Same calculation model as standard COILS software
+- Autonomous database management
+- Compatibility with many programming languages
+- No user limit
+- Authorization via distributable unlock file (no dongle needed)
+
+**Field of Application and Limitations**
+
+Multi-User Support:
+- Supports multi-user environments
+- Can handle multiple simultaneous calculations
+- Supports x86, x64, and anyCPU.NET architectures
+
+File Operations:
+- Creates and writes to files
+- Configurable file locations
+
+Version Compatibility:
+- Different versions of DLL cannot be used simultaneously within same application
+
+Development Restrictions:
+- Stateless design
+- Must be used to develop only one application at a time
+- Developing multiple applications requires additional licensing
+- Cannot be used for developing competing products (e.g., other coil calculation software)
+
+Validation:
+- Does not validate thermodynamic correctness
+- Results should be verified by a thermodynamic engineer
+
+Geometry Support:
+- Supports up to 12 geometries per calculation mode
+- Allows 72 different combinations
+
+Licensing:
+- DLL granted only with purchase of basic COILS license
+
+Technical Support:
+- Provided in English
+
+**Development and Support Details**
+
+Application Scope:
+- Must be used to develop only one desktop application at a time
+- Can be integrated into desktop or web environments
+- Additional applications require extra licensing
+
+Customization:
+- DLL provided without additional options or modifications
+- Custom geometries, refrigerants, or materials require separate quotations
+
+Delivery Time:
+- Approximately 15 working days from order and payment
+- For DLL without customizations
+
+**DLL Function and Nature**
+
+Function Library:
+- "Invisible" to user
+- Acts as calculation engine containing all thermodynamic formulas
+- Analogy: Like a car engine - without it, the car (software) cannot operate
+
+Responsibilities:
+- DLL itself does not provide warnings or validation
+- Performs calculations based on input parameters
+- Developer's responsibility to validate results and handle errors
+
+Documentation:
+- Integration manual provides detailed instructions
+- Parameter inputs and usage documented
+- Example implementation provided
+- Facilitates integration by experienced programmers
+- Not a complete software solution
+
+**Integration Considerations**
+
+Software Requirements:
+- Must be embedded within a software application
+- Example: Smart Air (already integrated as core calculation engine)
+- Customer who purchased COILS DLL is considered end-user
+- Meant solely for development of single software application by customer
+
+Proprietary Nature:
+- Proprietary engine containing complex thermodynamic models
+- Does not operate independently
+- Requires software interface to supply inputs and receive outputs
+- Does not issue warnings if results are thermodynamically invalid
+- Validation must be performed externally by qualified engineers
+
+**Programming Language Support**
+
+Compatible Languages:
+- VB6
+- .NET
+- Various other programming languages
+
+Version-Specific Features:
+
+VB6 Version:
+- Not thread-safe
+- Can perform only one calculation at a time
+
+.NET Version:
+- Thread-safe
+- Allows multiple calculations in parallel
+- Suitable for web environments
+
+**Performance**
+
+Calculation Time:
+- Varies depending on fluid complexity
+- Refrigerants generally require more processing time
+
+Geometry Capacity:
+- Supports up to 12 geometries per calculation mode
+- Enables 72 possible combinations
+
+**Installation and Deployment**
+
+Distribution:
+- Can be included in installation packages
+- Use restricted to single application developed by licensee
+- Number of end-users depends on license used within customer's software, not on DLL itself
+
+**License Management**
+
+Components:
+- Activation code
+- Lock file
+
+Development Process:
+1. Initially, DLL provided as temporarily open package
+2. License to develop and test included
+3. Once development complete: sealed, encrypted DLL version supplied
+4. Protects technical details for deployment
+
+**Demo and Testing**
+
+Demo Version:
+- DLL does not have demo version
+- Testing only possible within context of host software (e.g., COILS)
+
+Support Structure:
+- Available to developers for integration
+- End-user support requires separate annual technical agreement
+
+**Integration Manual**
+
+Purpose:
+- Guides developers on proper parameter provision
+- Provided example demonstrates usage
+- Not exhaustive
+- Serves only as reference for implementation
+
+**Custom Development**
+
+Additional Services:
+- Study and data regarding manifolds can be revised
+- Collectors can be included
+- Cannot be broken down by mode (not supported even in Unilab Coils 8)
+
+Rule Management:
+- Standard DLL does not support introduction or verification of specific design rules
+- Examples: constraints on tube thickness, fin thickness, fin pitch
+- DLL allows these parameters as "free values"
+- Rule management left to application developer
+- Alternatively: Unilab can customize DLL to incorporate rule checks (quoted separately)
+
+**Parameter Configuration Examples**
+
+Height Parameter:
+- Should offer two options: "Number of Tubes" and "Coil Height"
+- Similar to Unilab 8.0
+- Reference: section 3.1 of manual, input parameter number 8
+
+Inlet Air Conditions:
+- Two options: "Inlet Air Wet Bulb" and "Inlet Air Relative Humidity (%)"
+- As in Unilab 8.0
+- Users should be able to select preferred parameter
+- Reference: section 3.1 of manual, input parameters 17 and 18
+
+Altitude and Pressure:
+- System should allow selection of altitude and pressure
+- Enable dynamic pressure calculation (as in Unilab 8.0)
+- In DLL: only altitude and air density can be specified (parameters 21 and 24)
+- Atmospheric pressure cannot be directly entered
+
+Manifold Material:
+- Options limited to: Copper and Iron
+- Consistent with Unilab 8.0
+- Reference: section 3.1 of manual, input parameters 37 and 38
+
+**Customization Packages**
+
+Distributor Level:
+Includes:
+- Addition of agent logo in selection masks
+- Dynamic replacement of logos and headers in print outputs
+- Change of company colors
+- Modification of activator software to allow activation with either parent or distributor logo
+
+Does not include:
+- Changing series names
+- Changing models
+- Changing prices according to logo
+
+OEM Level:
+Allows:
+- Full customization
+- Dynamic name, series, accessories, and price changes based on selected logos
+- Requires neutral drawings and photos
+
+Includes:
+- All features of Distributor level
+- Additional support for changing series names and prices
+
+**Finalized Configuration**
+
+Important Notes:
+- Once DLL is delivered, adding new geometries is not possible
+- DLL is secured, encrypted calculation engine
+- Only processes data provided to it
+- Cannot access or modify internal database to include new geometries
+
+Adding New Features:
+- To incorporate new geometries: request Unilab to create new configuration
+- Process requires quotation
+- DLL functions as calculation engine, not software application
+- Does not support autonomous modifications by users
+
+Data Encryption:
+- Once development and implementation are completed, data will be encrypted
+- Modifications impossible without requesting Unilab to insert new data
+- COILS DLL linked to specific configuration
+- Cannot be updated like standard DLLs (embedded in customized software)
+
+Examples of Updates Requiring Quotation:
+- Adding new refrigerants
+- Adding new input data
+- Adding new geometries
+- Unilab must perform updates
+- Activities subject to quotation
+
+**Mother Company Concept**
+
+Definition:
+- "Société mère" (mother company) refers to client that purchases multiple commercial licenses
+- Distributes selection tool or DLL to selected users
+- Acts as main entity overseeing distribution
+
+**Testing and Validation**
+
+DLL Testing:
+- DLL does not have standalone demo version (is core calculation engine of COILS software)
+- Client as owner of COILS can test DLL and its data by using COILS software itself
+- DLL produces same calculation models and results as COILS
+
+Developer Support:
+- Technical support provided to developers
+- If developers have doubts about integrating calculation engine: support from technical team available
+
+**Understanding DLL Development**
+
+Developer Manual:
+- Detailed manual provided by Unilab
+- Explains parameters to be supplied for proper operation
+
+Example Code:
+- Provided example demonstrates how to call DLL
+- Not complete software solution
+- Illustrative example to guide developers
+- Does not cover all possible input combinations
+- Serves only as reference
+
+Key Understanding:
+- DLL is not standalone software
+- Is component that developers embed into their applications
+- Application must be developed externally
+- Must call DLL with correct inputs to obtain desired results
+
+**Validation Requirements**
+
+The DLL:
+- Allows parameters to be set as "free values"
+- Does not warn if results are thermodynamically invalid
+- Validation must be performed externally by qualified engineers
+- Is developer's responsibility to validate results and handle errors
+
+Example:
+- During design calculations, incorrect values may be entered
+- Fin pitch might not match values in Geometries_Coils_DLL Excel file
+- Values should not exceed those specified in Geometries_Coils_DLL_Customer_Data file
+- Standard DLL does not enforce these constraints
+
+**Summary**
+
+The DLL is:
+- High-performance, proprietary calculation engine
+- Intended for integration into customized software solutions
+- Licensing, support, and customization governed by contractual agreements
+- Fixed configuration once finalized
+- Modifications or additions require formal requests and quotations
+- Core thermodynamic engine requiring external interface and validation
+
+================================================================================
+9. TECHNICAL SPECIFICATIONS AND REQUIREMENTS
+================================================================================
+
+This section consolidates all technical specifications and requirements covered throughout the document.
+
+**Server Requirements (BREEZE)**
+
+Minimum Requirements:
+- RAM: 8 GB
+- CPU: 4 vCPU
+- Disk space: 160 GB SSD
+
+Recommended Configuration:
+- Storage: 80 GB SSD
+- RAM: 12 GB
+- CPU: 2 cores
+- OS: Windows Server 2019 Standard
+
+Required Software Installation:
+- IIS Manager
+- SQL Server 2014 (Express, free)
+- WinMerge
+- Firefox
+- Notepad
+
+**Logo and Branding**
+
+Required Format:
+- Full HD logo in PNG format
+- 150 dpi
+- 1080p resolution
+
+Logo Configuration:
+- Video guide: https://support.unilab.eu/support/solutions/articles/9000212538-how-to-set-logo-and-company-data-in-coils
+
+**DLL Architecture Support**
+
+Supported Platforms:
+- x86
+- x64
+- anyCPU.NET architectures
+
+**Calculation Formulas Reference**
+
+Circuit Calculation:
+Number of circuits = (Number of pipes × number of rows) / number of pipes in series
+
+Pressure Drop in Capillary:
+$$\Delta P = f \times \frac{L}{D} \times \frac{\rho v^2}{2}$$
+
+Vapor Quality:
+$$X = \frac{m_{vapor}}{m_{total}}$$
+
+**Data Requirements from Customers**
+
+For BREEZE Integration:
+- Full HD logo in PNG format (150 dpi, 1080p)
+- Company data
+- Component list with codes
+- Fan curves and pressure drop data in Excel
+- Connection rules and constraints
+- Regulatory warnings and limits
+- Component specifications
+- Print templates in Word or PDF (approved by relevant departments)
+
+For DLL Integration:
+- Geometries_Coils_DLL Excel file
+- Geometries_Coils_DLL_Customer_Data file
+- Connection rules and design constraints
+- Material specifications
+
+**Software Versions and Features**
+
+Edition Comparison:
+
+Standard Edition:
+- Basic calculation features
+- Limited geometry support
+
+Professional Edition:
+- Partial/multiphase condensing modes
+- Enhanced calculation options
+
+Enterprise Edition:
+- Advanced energy recovery
+- Heat balance calculations
+- Multiple plants support (up to 10 plants)
+- Multiple coils per plant (up to 50 coils)
+- Coils in series functionality
+- Complex configurations support
+
+**Support and Services**
+
+AHRI Certification Support:
+- Creating dedicated software setups for AHRI compliance
+- Installing setups into AHRI Virtual Machine
+- Performing periodic checks and recalibrations
+- Assisting with re-rating procedures
+- Geometry calibration and detailed analysis (may incur additional cost)
+
+DLL Support:
+- Technical support provided in English
+- Available to developers for integration
+- End-user support requires separate annual technical agreement
+
+BREEZE Support:
+- Integration support
+- Configuration assistance
+- Customization services
+
+**Delivery Times**
+
+DLL Without Customizations:
+- Approximately 15 working days from order and payment
+
+Custom Development:
+- Variable depending on scope
+- Subject to quotation
+
+**Compliance and Standards**
+
+AHRI Standards:
+- ASHRAE 33 compliance
+- AHRI 410 form requirements
+- 5% capacity deviation limit
+- 10% pressure drop deviation limit
+
+**Contact Information**
+
+UNILAB S.r.l.
+Via N. Bixio 6
+35131 - Padova (PD)
+Italy
+
+Support Portal:
+https://support.unilab.eu
+
+================================================================================
+END OF DOCUMENT
+================================================================================
+
+This comprehensive document consolidates all information from the seven original FAQ files, removing redundancies while preserving all unique technical details, procedures, specifications, and guidelines related to the Unilab heat transfer software family.
